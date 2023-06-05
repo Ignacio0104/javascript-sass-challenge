@@ -5,18 +5,30 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./styles/mainStyle.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+      crossorigin="anonymous"
+    ></script>
     <script src="./javascript/main.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>Document</title>
   </head>
   <body onload="onLoadActions()">
-    <h1>CriptoStatus</h1>
+    <h1 class="main-title-website">CriptoStatus</h1>
     <div class="criptos-main-container">
-      <img
-        src="./assets/images/Spinner-3.gif"
-        alt="spinner"
-        class="criptos-loader-container"
-      />
+      <div
+        class="spinner-border text-success criptos-loader-container"
+        role="status"
+      >
+        <span class="visually-hidden">Loading...</span>
+      </div>
     </div>
     <form class="form-container">
       <h3>Enter your expenses</h3>
@@ -30,9 +42,11 @@
       <input type="text" placeholder="Description..." id="descriptionInput" />
       <button type="submit" onclick="enterExpense(event)">Enter expense</button>
     </form>
-    <div class="expense-list-contaner"></div>
-    <div class="canvas-container">
-      <canvas id="myChart"></canvas>
+    <div class="expense-list-graph-cont">
+      <div class="expense-list-contaner"></div>
+      <div class="canvas-container">
+        <canvas id="myChart"></canvas>
+      </div>
     </div>
   </body>
 </html>

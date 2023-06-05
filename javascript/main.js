@@ -9,7 +9,7 @@ function onLoadActions() {
     expenses = JSON.parse(localStorage.getItem("expenses"));
   }
   populateExpenseList();
-  createChart();
+  createChart(document.getElementById("myChart"));
 }
 
 function fetchCriptos() {
@@ -20,7 +20,7 @@ function fetchCriptos() {
         let criptoElement = {
           name: cripto.name,
           id: cripto.id,
-          price: parseFloat(cripto.priceUsd).toFixed(5),
+          price: parseFloat(cripto.priceUsd).toFixed(3),
           rank: cripto.rank,
           symbol: cripto.symbol,
           link: cripto.explorer,
@@ -37,6 +37,7 @@ function populateTopFive() {
   const topFiveContainer = document.createElement("div");
   topFiveContainer.classList.add("criptos-top-container");
   const header = document.createElement("h3");
+  header.classList.add("top-container-header");
   header.innerText = "Top 5 criptos";
   topFiveContainer.appendChild(header);
   const subTopFiveContainer = document.createElement("div");
@@ -46,14 +47,18 @@ function populateTopFive() {
   criptosOrdered.map((cripto, index) => {
     if (index < 5) {
       let mainDivItem = document.createElement("div");
-      let listDetailOne = document.createElement("h3");
-      listDetailOne.innerText = "Name: " + cripto.name;
+      mainDivItem.classList.add("cripto-card");
+      let listDetailOne = document.createElement("h4");
+      listDetailOne.innerText = cripto.name;
       let listDetailTwo = document.createElement("p");
       listDetailTwo.innerText = "ID: " + cripto.id;
       let listDetailThree = document.createElement("p");
       listDetailThree.innerText = "Price: US$ " + cripto.price;
       let listDetailFour = document.createElement("p");
       listDetailFour.innerText = "Symbol: " + cripto.symbol;
+      mainDivItem.addEventListener("click", () => {
+        window.location.href = cripto.link;
+      });
       mainDivItem.appendChild(listDetailOne);
       mainDivItem.appendChild(listDetailTwo);
       mainDivItem.appendChild(listDetailThree);
@@ -103,7 +108,7 @@ function populateAllCriptos(index, limit) {
       let listDetailTwo = document.createElement("td");
       listDetailTwo.innerText = cripto.id;
       let listDetailThree = document.createElement("td");
-      listDetailThree.innerText = cripto.price;
+      listDetailThree.innerText = "$ " + cripto.price;
       let listDetailFour = document.createElement("td");
       listDetailFour.innerText = cripto.symbol;
       mainTableRow.appendChild(listDetailOne);
@@ -160,7 +165,6 @@ function populateList() {
 
 function enterExpense(e) {
   e.preventDefault();
-  console.log(getLabels());
   let date = document.getElementById("dateInput");
   let amount = document.getElementById("numberInput");
   let description = document.getElementById("descriptionInput");
@@ -184,6 +188,7 @@ function enterExpense(e) {
     description.value = "";
     document.querySelector(".expense-list").remove();
     populateExpenseList();
+    updateChart();
   } else {
     let errorMessage = document.createElement("p");
     errorMessage.classList.add("error-submit");
@@ -203,8 +208,6 @@ function populateExpenseList() {
   document.querySelector(".expense-list-contaner").appendChild(list);
 }
 
-const ctx = document.getElementById("myChart");
-
 function getLabels() {
   const expensesLabels = expenses.map((exp) => exp.description);
   return expensesLabels;
@@ -215,25 +218,26 @@ function getValues() {
   return expenseValues;
 }
 
-function createChart() {
+function createChart(ctx) {
   new Chart(ctx, {
     type: "doughnut",
     data: {
       labels: getLabels(),
       datasets: [
         {
-          label: "# of Votes",
+          label: "Amount spent",
           data: getValues(),
           borderWidth: 1,
         },
       ],
     },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true,
-        },
-      },
-    },
   });
+}
+
+function updateChart() {
+  document.getElementById("myChart").remove();
+  let canvas = document.createElement("canvas");
+  canvas.setAttribute("id", "myChart");
+  createChart(canvas);
+  document.querySelector(".canvas-container").appendChild(canvas);
 }

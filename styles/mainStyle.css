@@ -1,12 +1,59 @@
+@import url("https://fonts.googleapis.com/css2?family=Turret+Road:wght@500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Orbitron&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap");
+body {
+  background: #171616;
+  background: linear-gradient(59deg, rgb(23, 22, 22) 0%, rgb(73, 71, 71) 48%, rgb(32, 31, 31) 95%);
+}
+
+.main-title-website {
+  font-family: "Turret Road", cursive;
+  display: flex;
+  justify-content: center;
+  font-weight: bold;
+  letter-spacing: 3px;
+  margin: 10vh 0px;
+  color: #fff;
+  text-shadow: 0 0 7px #fff, 0 0 10px #fff, 0 0 21px #fff, 0 0 42px #0fa, 0 0 82px #0fa, 0 0 92px #0fa, 0 0 102px #0fa, 0 0 151px #0fa;
+}
+
 .criptos-top-container {
   display: flex;
   flex-direction: column;
+}
+.criptos-top-container .top-container-header {
+  font-family: "Orbitron", sans-serif;
+  color: #f5f5f5;
+  margin-left: 5vw;
+  margin-bottom: 40px;
+}
+.criptos-top-container .cripto-card {
+  padding: 2px 10px;
+  color: #f5f5f5;
+  background: rgba(23, 22, 22, 0.73);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(8.1px);
+  -webkit-backdrop-filter: blur(8.1px);
+  border: 1px solid rgba(23, 22, 22, 0.96);
+  font-family: "Poppins", sans-serif;
+  cursor: pointer;
+}
+.criptos-top-container .cripto-card h4 {
+  display: flex;
+  justify-content: center;
+}
+.criptos-top-container .cripto-card:hover {
+  scale: 1.1;
+  transition: all 0.5s ease;
 }
 
 .criptos-top-subcontainer {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 10px;
+  gap: 15px;
+  width: 95vw;
+  margin: auto;
 }
 
 .criptos-list-container {
@@ -14,6 +61,11 @@
   justify-content: center;
   flex-direction: column;
   align-items: center;
+  margin-top: 30px;
+}
+.criptos-list-container h3 {
+  font-family: "Orbitron", sans-serif;
+  color: #f5f5f5;
 }
 .criptos-list-container table {
   width: 80%;
@@ -21,16 +73,19 @@
 .criptos-list-container .criptos-list-subcontainer {
   margin: 10px;
   border: 1px solid black;
+  color: #0b8404;
+  text-align: center;
 }
 .criptos-list-container .criptos-list-subcontainer tr {
   cursor: pointer;
 }
 .criptos-list-container .criptos-list-subcontainer th, .criptos-list-container .criptos-list-subcontainer td {
-  border: 1px solid black;
+  border: 1px solid #0ebc05;
   padding: 2px 10px;
 }
 .criptos-list-container .criptos-list-subcontainer tr:hover {
-  background-color: #cccbcf;
+  background-color: #171616;
+  color: #f5f5f5;
 }
 
 .button-page-container {
@@ -45,6 +100,11 @@
 }
 
 .canvas-container {
-  width: 500px;
-  height: 500px;
+  width: 400px;
+  height: 400px;
+}
+
+.expense-list-graph-cont {
+  display: flex;
+  justify-content: space-around;
 }/*# sourceMappingURL=mainStyle.css.map */
