@@ -1,10 +1,15 @@
 let criptosInformation = [];
 let pageIndex = 0;
-
+let expenses = [];
 //https://docs.coincap.io/#ee30bea9-bb6b-469d-958a-d3e35d442d7a
 
 function onLoadActions() {
   fetchCriptos();
+  if (JSON.parse(localStorage.getItem("expenses"))) {
+    expenses = JSON.parse(localStorage.getItem("expenses"));
+  }
+  populateExpenseList();
+  createChart();
 }
 
 function fetchCriptos() {
@@ -151,4 +156,84 @@ function populateList() {
   loader.remove();
   populateTopFive();
   populateAllCriptos(pageIndex, pageIndex + 10);
+}
+
+function enterExpense(e) {
+  e.preventDefault();
+  console.log(getLabels());
+  let date = document.getElementById("dateInput");
+  let amount = document.getElementById("numberInput");
+  let description = document.getElementById("descriptionInput");
+  document.querySelector(".error-submit")?.remove();
+  if (
+    date !== undefined &&
+    amount !== undefined &&
+    amount.value > 0 &&
+    description !== undefined &&
+    description.value !== ""
+  ) {
+    let expense = {
+      date: date.value,
+      amount: amount.value,
+      description: description.value,
+    };
+    expenses.push(expense);
+    localStorage.setItem("expenses", JSON.stringify(expenses));
+    date.value = "";
+    amount.value = "";
+    description.value = "";
+    document.querySelector(".expense-list").remove();
+    populateExpenseList();
+  } else {
+    let errorMessage = document.createElement("p");
+    errorMessage.classList.add("error-submit");
+    errorMessage.innerText = "Please review the information and try again";
+    document.querySelector(".form-container").appendChild(errorMessage);
+  }
+}
+
+function populateExpenseList() {
+  let list = document.createElement("ul");
+  list.classList.add("expense-list");
+  expenses.map((expense, i) => {
+    let item = document.createElement("li");
+    item.innerText = `$ ${expense.amount} - ${expense.date} - ${expense.description} `;
+    list.appendChild(item);
+  });
+  document.querySelector(".expense-list-contaner").appendChild(list);
+}
+
+const ctx = document.getElementById("myChart");
+
+function getLabels() {
+  const expensesLabels = expenses.map((exp) => exp.description);
+  return expensesLabels;
+}
+
+function getValues() {
+  const expenseValues = expenses.map((exp) => exp.amount);
+  return expenseValues;
+}
+
+function createChart() {
+  new Chart(ctx, {
+    type: "doughnut",
+    data: {
+      labels: getLabels(),
+      datasets: [
+        {
+          label: "# of Votes",
+          data: getValues(),
+          borderWidth: 1,
+        },
+      ],
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+        },
+      },
+    },
+  });
 }
