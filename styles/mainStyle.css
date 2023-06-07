@@ -69,6 +69,8 @@ body {
 }
 .criptos-list-container table {
   width: 80%;
+  background: #171616;
+  background: linear-gradient(59deg, rgb(23, 22, 22) 0%, rgb(73, 71, 71) 48%, rgb(32, 31, 31) 95%);
 }
 .criptos-list-container .criptos-list-subcontainer {
   margin: 10px;
@@ -97,9 +99,90 @@ body {
   padding: 1px 40px;
   font-size: 20px;
   cursor: pointer;
+  background: rgba(23, 22, 22, 0.73);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(8.1px);
+  -webkit-backdrop-filter: blur(8.1px);
+  border: 1px solid rgba(23, 22, 22, 0.96);
+  color: #0ebc05;
+}
+.button-page-container button:disabled {
+  color: black;
+}
+
+.form-container {
+  background: rgba(23, 22, 22, 0.73);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(8.1px);
+  -webkit-backdrop-filter: blur(8.1px);
+  border: 1px solid rgba(23, 22, 22, 0.96);
+  width: 40%;
+  margin: auto;
+  margin-top: 40px;
+}
+.form-container h3 {
+  font-family: "Orbitron", sans-serif;
+  color: #f5f5f5;
+  display: flex;
+  justify-content: center;
+}
+
+.form-main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto auto;
+  justify-items: center;
+  align-items: center;
+  gap: 20px;
+}
+.form-main h3 {
+  grid-column: 1/span 2;
+}
+.form-main input {
+  width: 90%;
+  background-color: transparent;
+  color: #f5f5f5;
+  border: none;
+  border-bottom: 1px solid #0ebc05;
+}
+.form-main input:focus {
+  outline: none;
+  border-bottom: 1px solid #f5f5f5;
+  transition: all 0.3s ease-in-out;
+}
+.form-main #descriptionInput {
+  grid-column: 1/span 2;
+}
+.form-main button {
+  grid-column: 1/span 2;
+  justify-self: center;
+  align-self: center;
+  margin-bottom: 10px;
+  width: 50%;
+  background: rgba(23, 22, 22, 0.73);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(8.1px);
+  -webkit-backdrop-filter: blur(8.1px);
+  border: 1px solid rgba(23, 22, 22, 0.96);
+  color: #f5f5f5;
+  font-family: "Orbitron", sans-serif;
+}
+.form-main button:hover {
+  transition: all 0.5s ease;
+  color: rgba(23, 22, 22, 0.73);
+  background-color: #f5f5f5;
+}
+
+.expense-list-contaner {
+  color: #f5f5f5;
+  margin-top: 30px;
 }
 
 .canvas-container {
+  display: flex;
+  flex-direction: column;
   width: 400px;
   height: 400px;
 }
@@ -107,4 +190,10 @@ body {
 .expense-list-graph-cont {
   display: flex;
   justify-content: space-around;
+}
+
+.expense-total {
+  background-color: transparent;
+  display: flex;
+  justify-content: flex-end;
 }/*# sourceMappingURL=mainStyle.css.map */

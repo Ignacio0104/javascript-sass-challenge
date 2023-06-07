@@ -1,6 +1,10 @@
 let criptosInformation = [];
 let pageIndex = 0;
 let expenses = [];
+let nextEnable = true;
+let prevEnable = false;
+let pages = 0;
+let selectedFilter = "ALL";
 //https://docs.coincap.io/#ee30bea9-bb6b-469d-958a-d3e35d442d7a
 
 function onLoadActions() {
@@ -24,6 +28,7 @@ function fetchCriptos() {
           rank: cripto.rank,
           symbol: cripto.symbol,
           link: cripto.explorer,
+          maxSupply: cripto.maxSupply,
         };
         criptosInformation.push(criptoElement);
       });
@@ -76,11 +81,25 @@ function populateAllCriptos(index, limit) {
   const wholeListContainer = document.createElement("div");
   wholeListContainer.classList.add("criptos-list-container");
   mainContainer.appendChild(wholeListContainer);
-  const header = document.createElement("h3");
-  header.innerText = "All criptos:";
-  wholeListContainer.appendChild(header);
+  const criptosSelector = document.createElement("select");
+  criptosSelector.classList.add("selector-criptos");
+  const optionOne = document.createElement("option");
+  selectedFilter === "ALL" && optionOne.setAttribute("selected", true);
+  optionOne.innerText = "All criptos";
+  const optionTwo = document.createElement("option");
+  selectedFilter === "MAX" && optionTwo.setAttribute("selected", true);
+  optionTwo.innerText = "Criptos with max Supply";
+  const optionThree = document.createElement("option");
+  selectedFilter === "ETH" && optionThree.setAttribute("selected", true);
+  optionThree.innerText = "Criptos from ETH network";
 
-  //wholeListContainer.classList.add("criptos-top-container");
+  criptosSelector.addEventListener("change", (e) => handleSelectionChange(e));
+
+  criptosSelector.appendChild(optionOne);
+  criptosSelector.appendChild(optionTwo);
+  criptosSelector.appendChild(optionThree);
+  wholeListContainer.appendChild(criptosSelector);
+
   const wholeListCriptos = document.createElement("table");
   wholeListCriptos.classList.add("criptos-list-subcontainer");
 
@@ -100,7 +119,9 @@ function populateAllCriptos(index, limit) {
   tableTitle.appendChild(tableTitleFour);
   wholeListCriptos.appendChild(tableTitle);
 
-  criptosInformation.map((cripto, i) => {
+  let filteredList = filterList(selectedFilter);
+
+  filteredList.map((cripto, i) => {
     if (i >= index && i <= limit) {
       let mainTableRow = document.createElement("tr");
       let listDetailOne = document.createElement("td");
@@ -125,9 +146,11 @@ function populateAllCriptos(index, limit) {
   let buttonContainer = document.createElement("div");
   buttonContainer.classList.add("button-page-container");
 
+  validatePrevButton();
+
   let prevButton = document.createElement("button");
   prevButton.innerText = "<";
-  prevButton.disabled = index === 0;
+  prevButton.disabled = !prevEnable;
   let nextButton = document.createElement("button");
   nextButton.innerText = ">";
   nextButton.disabled = index === 90;
@@ -138,6 +161,41 @@ function populateAllCriptos(index, limit) {
 
   wholeListContainer.appendChild(wholeListCriptos);
   wholeListContainer.appendChild(buttonContainer);
+}
+
+function filterList(filter) {
+  let filteredArray = [...criptosInformation];
+  switch (filter) {
+    case "ALL":
+      return filteredArray;
+    case "ETH":
+      return filteredArray.filter((cripto) => cripto?.link?.includes("ether"));
+    case "MAX":
+      return filteredArray.filter((cripto) => cripto.maxSupply !== null);
+    default:
+      return filteredArray;
+  }
+}
+
+function handleSelectionChange(e) {
+  switch (e.target.value) {
+    case "All criptos":
+      selectedFilter = "ALL";
+      break;
+    case "Criptos with max Supply":
+      selectedFilter = "MAX";
+      break;
+    case "Criptos from ETH network":
+      selectedFilter = "ETH";
+      break;
+    default:
+      selectedFilter = "ALL";
+      break;
+  }
+  const oldList = document.querySelector(".criptos-list-container");
+  oldList.remove();
+  pageIndex = 0;
+  populateAllCriptos(pageIndex, pageIndex + 10);
 }
 
 function nextPageCriptos() {
@@ -153,6 +211,22 @@ function prevPageCriptos() {
     const oldList = document.querySelector(".criptos-list-container");
     oldList.remove();
     populateAllCriptos(pageIndex, pageIndex + 10);
+  }
+}
+
+function validatePrevButton() {
+  if (pageIndex <= 0) {
+    prevEnable = false;
+  } else {
+    prevEnable = true;
+  }
+}
+
+function validateNextButton(list) {
+  if (pageIndex <= 0) {
+    prevEnable = false;
+  } else {
+    prevEnable = true;
   }
 }
 
@@ -202,7 +276,7 @@ function populateExpenseList() {
   list.classList.add("expense-list");
   expenses.map((expense, i) => {
     let item = document.createElement("li");
-    item.innerText = `$ ${expense.amount} - ${expense.date} - ${expense.description} `;
+    item.innerText = `$ ${expense.amount} | ${expense.date} | ${expense.description} `;
     list.appendChild(item);
   });
   document.querySelector(".expense-list-contaner").appendChild(list);
@@ -232,6 +306,11 @@ function createChart(ctx) {
       ],
     },
   });
+  let totalExpense = document.createElement("h5");
+  totalExpense.classList.add("expense-total");
+  totalExpense.innerText =
+    "Total: $" + expenses.reduce((acc, current) => acc + +current.amount, 0);
+  document.querySelector(".expense-list-contaner").appendChild(totalExpense);
 }
 
 function updateChart() {
