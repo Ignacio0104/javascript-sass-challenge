@@ -147,13 +147,14 @@ function populateAllCriptos(index, limit) {
   buttonContainer.classList.add("button-page-container");
 
   validatePrevButton();
+  validateNextButton(filteredList);
 
   let prevButton = document.createElement("button");
   prevButton.innerText = "<";
-  prevButton.disabled = !prevEnable;
+  prevButton.disabled = prevEnable;
   let nextButton = document.createElement("button");
   nextButton.innerText = ">";
-  nextButton.disabled = index === 90;
+  nextButton.disabled = nextEnable;
   nextButton.addEventListener("click", () => nextPageCriptos());
   prevButton.addEventListener("click", () => prevPageCriptos());
   buttonContainer.appendChild(prevButton);
@@ -216,17 +217,19 @@ function prevPageCriptos() {
 
 function validatePrevButton() {
   if (pageIndex <= 0) {
-    prevEnable = false;
-  } else {
     prevEnable = true;
+  } else {
+    prevEnable = false;
   }
 }
 
 function validateNextButton(list) {
-  if (pageIndex <= 0) {
-    prevEnable = false;
+  pages = list.length / 10;
+  if (pageIndex / 10 < pages - 1) {
+    console.log("OK");
+    nextEnable = false;
   } else {
-    prevEnable = true;
+    nextEnable = true;
   }
 }
 
