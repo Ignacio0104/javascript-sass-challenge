@@ -5,7 +5,6 @@ let nextEnable = true;
 let prevEnable = false;
 let pages = 0;
 let selectedFilter = "ALL";
-//https://docs.coincap.io/#ee30bea9-bb6b-469d-958a-d3e35d442d7a
 
 function onLoadActions() {
   fetchCriptos();
