@@ -6,6 +6,8 @@ let prevEnable = false;
 let pages = 0;
 let selectedFilter = "ALL";
 
+//Main methods-------------------------------------------
+
 function onLoadActions() {
   fetchCriptos();
   if (JSON.parse(localStorage.getItem("expenses"))) {
@@ -15,25 +17,11 @@ function onLoadActions() {
   createChart(document.getElementById("myChart"));
 }
 
-function fetchCriptos() {
-  fetch("https://api.coincap.io/v2/assets")
-    .then((res) => res.json())
-    .then((data) => {
-      data.data.map((cripto) => {
-        let criptoElement = {
-          name: cripto.name,
-          id: cripto.id,
-          price: parseFloat(cripto.priceUsd).toFixed(3),
-          rank: cripto.rank,
-          symbol: cripto.symbol,
-          link: cripto.explorer,
-          maxSupply: cripto.maxSupply,
-        };
-        criptosInformation.push(criptoElement);
-      });
-      populateList();
-    })
-    .catch((e) => console.log(e));
+function populateList() {
+  const loader = document.querySelector(".criptos-loader-container");
+  loader.remove();
+  populateTopFive();
+  populateAllCriptos(pageIndex, pageIndex + 10);
 }
 
 function populateTopFive() {
@@ -142,40 +130,56 @@ function populateAllCriptos(index, limit) {
     }
   });
 
-  let buttonContainer = document.createElement("div");
-  buttonContainer.classList.add("button-page-container");
-
-  validatePrevButton();
-  validateNextButton(filteredList);
-
-  let prevButton = document.createElement("button");
-  prevButton.innerText = "<";
-  prevButton.disabled = prevEnable;
-  let nextButton = document.createElement("button");
-  nextButton.innerText = ">";
-  nextButton.disabled = nextEnable;
-  nextButton.addEventListener("click", () => nextPageCriptos());
-  prevButton.addEventListener("click", () => prevPageCriptos());
-  buttonContainer.appendChild(prevButton);
-  buttonContainer.appendChild(nextButton);
-
   wholeListContainer.appendChild(wholeListCriptos);
-  wholeListContainer.appendChild(buttonContainer);
+  buttonCreation(filteredList);
 }
 
-function filterList(filter) {
-  let filteredArray = [...criptosInformation];
-  switch (filter) {
-    case "ALL":
-      return filteredArray;
-    case "ETH":
-      return filteredArray.filter((cripto) => cripto?.link?.includes("ether"));
-    case "MAX":
-      return filteredArray.filter((cripto) => cripto.maxSupply !== null);
-    default:
-      return filteredArray;
-  }
+function populateExpenseList() {
+  document.querySelector(".expense-list")?.remove();
+  let list = document.createElement("ul");
+  list.classList.add("expense-list");
+  expenses.map((expense, i) => {
+    let itemContainer = document.createElement("div");
+    itemContainer.classList.add("list-item-container");
+    let item = document.createElement("li");
+    let trashIcon = document.createElement("img");
+    trashIcon.addEventListener("click", () => deleteExpense(expense));
+    trashIcon.setAttribute("src", "./../assets/trash-icon.png");
+    item.innerText = `$ ${expense.amount} | ${expense.date} | ${expense.description} `;
+    itemContainer.appendChild(item);
+    itemContainer.appendChild(trashIcon);
+
+    list.appendChild(itemContainer);
+  });
+  document.querySelector(".expense-total")?.remove();
+  document.querySelector(".expense-list-contaner").appendChild(list);
+  addExpenseTotal();
 }
+
+//API Actions-------------------------------------------------------------------
+
+function fetchCriptos() {
+  fetch("https://api.coincap.io/v2/assets")
+    .then((res) => res.json())
+    .then((data) => {
+      data.data.map((cripto) => {
+        let criptoElement = {
+          name: cripto.name,
+          id: cripto.id,
+          price: parseFloat(cripto.priceUsd).toFixed(3),
+          rank: cripto.rank,
+          symbol: cripto.symbol,
+          link: cripto.explorer,
+          maxSupply: cripto.maxSupply,
+        };
+        criptosInformation.push(criptoElement);
+      });
+      populateList();
+    })
+    .catch((e) => console.log(e));
+}
+
+//Actions and event listeners ---------------------------------------------------------
 
 function handleSelectionChange(e) {
   switch (e.target.value) {
@@ -214,30 +218,6 @@ function prevPageCriptos() {
   }
 }
 
-function validatePrevButton() {
-  if (pageIndex <= 0) {
-    prevEnable = true;
-  } else {
-    prevEnable = false;
-  }
-}
-
-function validateNextButton(list) {
-  pages = list.length / 10;
-  if (pageIndex / 10 < pages - 1) {
-    nextEnable = false;
-  } else {
-    nextEnable = true;
-  }
-}
-
-function populateList() {
-  const loader = document.querySelector(".criptos-loader-container");
-  loader.remove();
-  populateTopFive();
-  populateAllCriptos(pageIndex, pageIndex + 10);
-}
-
 function enterExpense(e) {
   e.preventDefault();
   let date = document.getElementById("dateInput");
@@ -272,28 +252,6 @@ function enterExpense(e) {
   }
 }
 
-function populateExpenseList() {
-  document.querySelector(".expense-list")?.remove();
-  let list = document.createElement("ul");
-  list.classList.add("expense-list");
-  expenses.map((expense, i) => {
-    let itemContainer = document.createElement("div");
-    itemContainer.classList.add("list-item-container");
-    let item = document.createElement("li");
-    let trashIcon = document.createElement("img");
-    trashIcon.addEventListener("click", () => deleteExpense(expense));
-    trashIcon.setAttribute("src", "./../assets/trash-icon.png");
-    item.innerText = `$ ${expense.amount} | ${expense.date} | ${expense.description} `;
-    itemContainer.appendChild(item);
-    itemContainer.appendChild(trashIcon);
-
-    list.appendChild(itemContainer);
-  });
-  document.querySelector(".expense-total")?.remove();
-  document.querySelector(".expense-list-contaner").appendChild(list);
-  addExpenseTotal();
-}
-
 function addExpenseTotal() {
   let totalExpense = document.createElement("h5");
   totalExpense.classList.add("expense-total");
@@ -310,16 +268,6 @@ function deleteExpense(e) {
   localStorage.setItem("expenses", JSON.stringify(expenses));
   populateExpenseList();
   updateChart();
-}
-
-function getLabels() {
-  const expensesLabels = expenses.map((exp) => exp.description);
-  return expensesLabels;
-}
-
-function getValues() {
-  const expenseValues = expenses.map((exp) => exp.amount);
-  return expenseValues;
 }
 
 function createChart(ctx) {
@@ -344,4 +292,70 @@ function updateChart() {
   canvas.setAttribute("id", "myChart");
   createChart(canvas);
   document.querySelector(".canvas-container").appendChild(canvas);
+}
+
+function buttonCreation(filteredList) {
+  let buttonContainer = document.createElement("div");
+  buttonContainer.classList.add("button-page-container");
+
+  validatePrevButton();
+  validateNextButton(filteredList);
+
+  let prevButton = document.createElement("button");
+  prevButton.innerText = "<";
+  prevButton.disabled = prevEnable;
+  let nextButton = document.createElement("button");
+  nextButton.innerText = ">";
+  nextButton.disabled = nextEnable;
+  nextButton.addEventListener("click", () => nextPageCriptos());
+  prevButton.addEventListener("click", () => prevPageCriptos());
+  buttonContainer.appendChild(prevButton);
+  buttonContainer.appendChild(nextButton);
+
+  document
+    .querySelector(".criptos-list-container")
+    .appendChild(buttonContainer);
+}
+
+//Filters and validations----------------------------------------------
+
+function filterList(filter) {
+  let filteredArray = [...criptosInformation];
+  switch (filter) {
+    case "ALL":
+      return filteredArray;
+    case "ETH":
+      return filteredArray.filter((cripto) => cripto?.link?.includes("ether"));
+    case "MAX":
+      return filteredArray.filter((cripto) => cripto.maxSupply !== null);
+    default:
+      return filteredArray;
+  }
+}
+
+function validatePrevButton() {
+  if (pageIndex <= 0) {
+    prevEnable = true;
+  } else {
+    prevEnable = false;
+  }
+}
+
+function validateNextButton(list) {
+  pages = list.length / 10;
+  if (pageIndex / 10 < pages - 1) {
+    nextEnable = false;
+  } else {
+    nextEnable = true;
+  }
+}
+
+function getLabels() {
+  const expensesLabels = expenses.map((exp) => exp.description);
+  return expensesLabels;
+}
+
+function getValues() {
+  const expenseValues = expenses.map((exp) => exp.amount);
+  return expenseValues;
 }
