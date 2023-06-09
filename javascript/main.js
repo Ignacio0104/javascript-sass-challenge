@@ -226,7 +226,6 @@ function validatePrevButton() {
 function validateNextButton(list) {
   pages = list.length / 10;
   if (pageIndex / 10 < pages - 1) {
-    console.log("OK");
     nextEnable = false;
   } else {
     nextEnable = true;
@@ -275,14 +274,43 @@ function enterExpense(e) {
 }
 
 function populateExpenseList() {
+  document.querySelector(".expense-list")?.remove();
   let list = document.createElement("ul");
   list.classList.add("expense-list");
   expenses.map((expense, i) => {
+    let itemContainer = document.createElement("div");
+    itemContainer.classList.add("list-item-container");
     let item = document.createElement("li");
+    let trashIcon = document.createElement("img");
+    trashIcon.addEventListener("click", () => deleteExpense(expense));
+    trashIcon.setAttribute("src", "./../assets/trash-icon.png");
     item.innerText = `$ ${expense.amount} | ${expense.date} | ${expense.description} `;
-    list.appendChild(item);
+    itemContainer.appendChild(item);
+    itemContainer.appendChild(trashIcon);
+
+    list.appendChild(itemContainer);
   });
+  document.querySelector(".expense-total")?.remove();
   document.querySelector(".expense-list-contaner").appendChild(list);
+  addExpenseTotal();
+}
+
+function addExpenseTotal() {
+  let totalExpense = document.createElement("h5");
+  totalExpense.classList.add("expense-total");
+  totalExpense.innerText =
+    "Total: $" + expenses.reduce((acc, current) => acc + +current.amount, 0);
+  document.querySelector(".expense-list-contaner").appendChild(totalExpense);
+}
+
+function deleteExpense(e) {
+  let newList = expenses.filter(
+    (expense) => expense.description !== e.description
+  );
+  expenses = newList;
+  localStorage.setItem("expenses", JSON.stringify(expenses));
+  populateExpenseList();
+  updateChart();
 }
 
 function getLabels() {
@@ -309,11 +337,6 @@ function createChart(ctx) {
       ],
     },
   });
-  let totalExpense = document.createElement("h5");
-  totalExpense.classList.add("expense-total");
-  totalExpense.innerText =
-    "Total: $" + expenses.reduce((acc, current) => acc + +current.amount, 0);
-  document.querySelector(".expense-list-contaner").appendChild(totalExpense);
 }
 
 function updateChart() {

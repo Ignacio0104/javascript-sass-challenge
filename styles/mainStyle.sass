@@ -44,9 +44,14 @@ body
 .criptos-top-subcontainer
     display: grid
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr))
+    grid-auto-flow: dense
     gap: 15px
     width: 95vw
     margin: auto
+
+.error-submit
+    color: tomato
+    margin-left: 20px
 
 .criptos-list-container
     display: flex
@@ -157,15 +162,283 @@ body
     color: #f5f5f5
     margin-top: 30px
 .canvas-container
-    display: flex
-    flex-direction: column
     width: 400px
     height: 400px
+    margin-left: 40px
 
 .expense-list-graph-cont
     display: flex
-    justify-content: space-around
+    justify-content: center
+    margin: 30px 0px
+    li
+        margin-right: 20px
+    img
+        cursor: pointer
 .expense-total
     background-color: transparent
     display: flex
     justify-content: flex-end
+
+.list-item-container
+    display: flex
+    justify-content: space-between
+
+@media screen and (max-width: 6000px)
+    .main-title-website
+        font-size: 80px
+
+    .top-container-header
+        font-size: 50px
+
+    .cripto-card
+        h4
+            font-size: 30px
+        p
+            font-size: 25px
+
+    .selector-criptos
+        font-size: 25px
+
+    .criptos-list-container
+        gap: 40px
+
+    .criptos-list-subcontainer
+        margin: 50px 0px
+        th
+            font-size: 35px
+        tr
+            font-size: 30px
+    .button-page-container
+        button
+            font-size: 40px
+            padding: 10px 100px
+
+    .form-container
+        width: 60%
+        h3
+            font-size: 40px
+            margin-top: 20px
+        input, button
+            font-size: 30px
+    .expense-list-graph-cont
+        li
+            font-size: 35px
+        h5
+            font-size: 40px
+    .canvas-container
+        display: flex
+        flex-direction: column
+        width: 800px
+        height: 800px
+@media screen and (max-width: 1440px)
+    .top-container-header
+        font-size: 45px
+
+    .cripto-card
+        p
+            font-size: 21px
+
+    .criptos-list-container
+        gap: 30px
+
+    .criptos-list-subcontainer
+        th
+            font-size: 30px
+        tr
+            font-size: 25px
+    .form-container
+        width: 80%
+
+    .expense-list-graph-cont
+        li
+            font-size: 25px
+        h5
+            font-size: 35px
+    .canvas-container
+        width: 700px
+        height: 700px
+
+@media screen and (max-width: 1440px) and (max-height:700px)
+    .main-title-website
+        font-size: 50px
+    .top-container-header
+        font-size: 25px
+
+    .cripto-card
+        h4
+            font-size: 20px
+        p
+            font-size: 15px
+
+    .selector-criptos
+        font-size: 20px
+
+    .button-page-container
+        button
+            font-size: 30px
+            padding: 5px 80px
+
+    .criptos-list-container
+        gap: 20px
+
+    .criptos-list-subcontainer
+        th
+            font-size: 20px
+        tr
+            font-size: 17px
+    .form-container
+        width: 70%
+        h3
+            font-size: 35px
+        input,button
+            font-size: 20px
+    .expense-list-graph-cont
+        li
+            font-size: 20px
+        h5
+            font-size: 30px
+        img
+            height: 40px
+    .canvas-container
+        width: 500px
+        height: 500px
+
+@media screen and (max-width: 1024px)
+    .main-title-website
+        font-size: 70px
+
+    .top-container-header
+        font-size: 40px
+
+    .criptos-top-subcontainer
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))
+    .cripto-card
+        h4
+            font-size: 25px
+        p
+            font-size: 20px
+
+    .selector-criptos
+        font-size: 25px
+
+    .criptos-list-container
+        gap: 40px
+
+    .criptos-list-subcontainer
+        th
+            font-size: 30px
+        tr
+            font-size: 25px
+    .button-page-container
+        button
+            font-size: 40px
+            padding: 10px 80px
+
+    .form-container
+        width: 70%
+    .expense-list-graph-cont
+        li
+            font-size: 25px
+        h5
+            font-size: 35px
+    .canvas-container
+        display: flex
+        flex-direction: column
+        width: 500px
+        height: 500px
+
+@media screen and (max-width: 768px)
+    .main-title-website
+        font-size: 60px
+
+    .top-container-header
+        font-size: 35px
+
+    .selector-criptos
+        font-size: 25px
+
+    .criptos-list-container
+        gap: 40px
+        table
+            width: 90%
+
+    .criptos-list-subcontainer
+        th
+            font-size: 25px
+        tr
+            font-size: 20px
+    .button-page-container
+        button
+            font-size: 30px
+            padding: 5px 80px
+
+    .form-container
+        width: 80%
+        h3
+            font-size: 35px
+        input,button
+            font-size: 20px
+    .expense-list-graph-cont
+        li
+            font-size: 20px
+        h5
+            font-size: 30px
+        img
+            height: 40px
+    .canvas-container
+        display: flex
+        flex-direction: column
+        margin-left: 5px
+        width: 400px
+        height: 400px
+
+@media screen and (max-width: 425px)
+    .main-title-website
+        font-size: 50px
+
+    .top-container-header
+        font-size: 35px
+
+    .selector-criptos
+        font-size: 20px
+
+    .criptos-list-container
+        gap: 20px
+        table
+            width: 90%
+
+    .criptos-list-subcontainer
+        th
+            font-size: 20px
+        tr
+            font-size: 15px
+
+    .form-container
+        width: 90%
+        h3
+            font-size: 30px
+            margin-left: 10px
+        input,button
+            font-size: 20px
+    .expense-list-graph-cont
+        display: flex
+        flex-direction: column
+        li
+            font-size: 20px
+        h5
+            font-size: 30px
+            margin-right: 20px
+        img
+            height: 40px
+    .canvas-container
+        display: flex
+        flex-direction: column
+        align-items: center
+        margin-left: 5px
+        width: auto
+        height: auto
+
+@media screen and (max-width: 320px)
+    .button-page-container
+        button
+            padding: 0px 60px
