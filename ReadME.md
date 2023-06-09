@@ -1,6 +1,6 @@
-#SEGUIMIENTO DE GASTOS DE CRIPTOMONEDAS Y REPRESENTACIÓN GRÁFICA
+# SEGUIMIENTO DE GASTOS DE CRIPTOMONEDAS Y REPRESENTACIÓN GRÁFICA
 
-##Consignas
+## Consignas
 
 Desarrollar una aplicación web que permita a los usuarios ingresar gastos relacionados con criptomonedas, especificando la cantidad gastada y la fecha de la transacción. Utilizando una llamada gratuita a una API de criptomonedas, obtener la información de precios y calcular el porcentaje que representa cada gasto con respecto al total gastado.
 
@@ -13,7 +13,7 @@ Desarrollar una aplicación web que permita a los usuarios ingresar gastos relac
 5. Utilizar los métodos filter, map y reduce para procesar y filtrar la información específica obtenida de la API de criptomonedas, según los criterios que desees.
 6. Diseñar una interfaz fácil de usar y comprensible para los usuarios, con instrucciones claras sobre cómo ingresar los gastos y visualizar el gráfico.
 
-##Solución
+## Solución
 
 1. La API utilizada fue https://docs.coincap.io/#ee30bea9-bb6b-469d-958a-d3e35d442d7a, de donde sacamos toda la información necesario para poblar la aplicación. Los datos mostrados son el top 5 de criptomonedas (basado en el ranking de la API) y luego una lista de todas las criptomonedas con un páginado para ir avanzando. Tanto las filas como las cartas donde se muestra la info de las criptomonedas son links que nos llevan a la página principal de dicha moneda
 
@@ -27,8 +27,8 @@ Desarrollar una aplicación web que permita a los usuarios ingresar gastos relac
 
 - El **map** se utiliza en el método fetchCriptos para llenar la lista con la información de la API, para cargar el top five y para cargar la lista de criptos. También se usa para llenar la lista de gastos y para dibujar el gráfico
 
--El **filter** se usa en el select para filtrar la lista de criptomonedas por 3 criterios distintos y también para eliminar los gastos a través del icono del tacho de basura
+- El **filter** se usa en el select para filtrar la lista de criptomonedas por 3 criterios distintos y también para eliminar los gastos a través del icono del tacho de basura
 
--El **reduce** se utiliza para calcular y mostrar el total gastado
+- El **reduce** se utiliza para calcular y mostrar el total gastado
 
 6. La aplicación si bien simple, tiene un diseño muy intuitivo y fácil de usar
